@@ -45,6 +45,11 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+I2C_HandleTypeDef hi2c1;
+
+TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim16;
+TIM_HandleTypeDef htim17;
 
 /* USER CODE BEGIN PV */
 
@@ -116,7 +121,7 @@ int main(void)
 	  // loop until it's time to go to sleep.
 	  while((wakeup_time + SLEEP_TIMEOUT) > HAL_GetTick()){
 		  if(!(HAL_GPIO_ReadPin(BUTTON_GPIO_Port, BUTTON_Pin)) &
-			 (get_thermo_status	== THERMO_DONE))
+			 (get_thermo_status()	== THERMO_DONE))
 		  {
 			  reset_temp_measurements();
 			  LCD_set_temp(0);
@@ -127,7 +132,9 @@ int main(void)
 
 	  // turn off the power to the temp sensor
 	  tmp_powerdown();
+	  LCD_powerdown();
 // if in debug mode, we just loop and wait for the button press
+// changing the build configuration doesn't fix this. you may need to do it manually.
 #ifdef DEBUG
 	  while(HAL_GPIO_ReadPin(BUTTON_GPIO_Port, BUTTON_Pin));
 #else
@@ -136,6 +143,7 @@ int main(void)
 	  // when you wakeup, turn on the temp sensor, reset the LCD value and start the timers
 
 	  tmp_powerup();
+	  LCD_powerup();
 	  reset_temp_measurements();
 	  LCD_set_temp(0);
 	  HAL_TIM_Base_Start_IT(&htim16);
@@ -261,7 +269,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 100;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 0;
+  htim2.Init.Period = 100;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -273,7 +281,7 @@ static void MX_TIM2_Init(void)
   {
     Error_Handler();
   }
-  if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
+  if (HAL_TIM_OC_Init(&htim2) != HAL_OK)
   {
     Error_Handler();
   }
@@ -283,11 +291,11 @@ static void MX_TIM2_Init(void)
   {
     Error_Handler();
   }
-  sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 0;
+  sConfigOC.OCMode = TIM_OCMODE_TIMING;
+  sConfigOC.Pulse = 50;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  if (HAL_TIM_OC_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
   {
     Error_Handler();
   }
@@ -314,9 +322,9 @@ static void MX_TIM16_Init(void)
 
   /* USER CODE END TIM16_Init 1 */
   htim16.Instance = TIM16;
-  htim16.Init.Prescaler = 700; //479;
+  htim16.Init.Prescaler = 479;
   htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim16.Init.Period = 225;
+  htim16.Init.Period = 1612;
   htim16.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim16.Init.RepetitionCounter = 0;
   htim16.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -381,9 +389,9 @@ static void MX_GPIO_Init(void)
                           |LCD5_Pin|LCD6_Pin|LCD7_Pin|LCD8_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(VTEMP_GPIO_Port, VTEMP_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, VLCD_Pin|VTEMP_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : COM0_Pin COM1_Pin COM2_Pin COM4_Pin */
+  /*Configure GPIO pins : COM0_Pin COM1_Pin COM2_Pin COM3_Pin */
   GPIO_InitStruct.Pin = COM0_Pin|COM1_Pin|COM2_Pin|COM3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -404,12 +412,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(BUTTON_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : VTEMP_Pin */
-  GPIO_InitStruct.Pin = VTEMP_Pin;
+  /*Configure GPIO pins : VLCD_Pin VTEMP_Pin */
+  GPIO_InitStruct.Pin = VLCD_Pin|VTEMP_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(VTEMP_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 }
 

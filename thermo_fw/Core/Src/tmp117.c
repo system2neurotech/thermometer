@@ -35,6 +35,7 @@ HAL_StatusTypeDef tmp_write_register(uint8_t register_addr, uint16_t data)
 	      Error_Handler();
 	    }
 	}
+	return HAL_OK;
 
 }
 
@@ -57,11 +58,6 @@ uint16_t tmp_read_register(uint8_t register_addr)
 	}
 
 	return (uint16_t)(aRxBuffer[1] + (aRxBuffer[0] << 8));
-
-}
-
-HAL_StatusTypeDef tmp_write_eeprom_register(uint8_t register_addr, uint16_t data)
-{
 
 }
 

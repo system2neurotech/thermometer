@@ -41,7 +41,6 @@ void LCD_set_null()
 
 void LCD_decode_digits()
 {
-	bcd_temp[0];
 	uint16_t com_seg0, com_seg1 , com_seg2, com_seg3;
 	segments[0] = 0;
 	segments[1] = 0;
@@ -254,4 +253,15 @@ void LCD_run()
 	LCD_seq++;
 	if(LCD_seq >= 8)
 		LCD_seq = 0;
+}
+
+void LCD_powerup(){
+	HAL_GPIO_WritePin(VLCD_GPIO_Port, VLCD_Pin, GPIO_PIN_SET);
+
+}
+
+
+void LCD_powerdown(){
+	HAL_GPIO_WritePin(VLCD_GPIO_Port, VLCD_Pin, GPIO_PIN_RESET);
+
 }
