@@ -1,9 +1,19 @@
-/*
- * tmp117.c
- *
- *  Created on: Mar 25, 2020
- *      Author: samtm
- */
+/*******************************************************************************
+  * tmp117.c
+  *
+  *  Created on: Mar 26, 2020
+  *      Author: samtm
+  *  Copyright (c) System 2 Neurotechnology Inc.
+  *   *
+  * This software component is licensed by System 2 Neurotechnology Inc.
+  * under BSD 3-Clause license, the "License"; You may not use this file
+  * except in compliance with the License. You may obtain a copy of the
+  * License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  *
+  ******************************************************************************/
+
 
 #include "main.h"
 #include "tmp117.h"
