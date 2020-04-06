@@ -1,22 +1,15 @@
-/*******************************************************************************
-  * thermo.c
-  *
-  *  Created on: Mar 26, 2020
-  *      Author: samtm
-  *  Copyright (c) System 2 Neurotechnology Inc.
-  *   *
-  * This software component is licensed by System 2 Neurotechnology Inc.
-  * under BSD 3-Clause license, the "License"; You may not use this file
-  * except in compliance with the License. You may obtain a copy of the
-  * License at:
-  *                        opensource.org/licenses/BSD-3-Clause
-  *
-  *
-  ******************************************************************************/
+/*
+ * thermo.c
+ *
+ *  Created on: Mar 26, 2020
+ *      Author: samtm
+ */
+
 
 #include "main.h"
 #include "thermo.h"
 #include "tmp117.h"
+#include "lcd.h"
 
 #define NO_OF_SAMPLES 8
 #define MAX_TEMP_DIF 2	// maximum difference in 10ths of a deg C
@@ -69,42 +62,9 @@ void read_temp(){
 
 	// check if the maximum difference is within spec
 	if(temp_max_diff() < 5){
-		// turn off flashing LEDs
-		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2) ;
-		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_4) ;
-    	HAL_TIM_Base_Stop(&htim16);
-		// buzz to indicated done
-		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1) ;
-		HAL_Delay(500);
-		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1) ;
-		HAL_Delay(200);
-
-
-		volatile uint16_t temperature = temp_average();
-		if(temperature < 370){
-			// set LED green
-			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2) ;
-			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3) ;
-			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_4) ;
-		}
-		else if(temperature > 380)
-		{
-			// set LED red
-			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4) ;
-			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2) ;
-			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3) ;
-		}
-		else{
-			// set LED orange
-			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3) ;
-			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2) ;
-			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_4) ;
-		}
-
-
+		LCD_set_temp(temp_average());
 		// turn off the timer
 		HAL_TIM_Base_Stop(&htim17);
-		set_thermo_status(THERMO_DONE);
 	}
 
 }

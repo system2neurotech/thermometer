@@ -65,20 +65,38 @@ TIM_HandleTypeDef htim17;
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define LED_GREEN_Pin GPIO_PIN_1
-#define LED_GREEN_GPIO_Port GPIOA
-#define LED_ORANGE_Pin GPIO_PIN_2
-#define LED_ORANGE_GPIO_Port GPIOA
-#define LED_RED_Pin GPIO_PIN_3
-#define LED_RED_GPIO_Port GPIOA
+#define COM0_Pin GPIO_PIN_0
+#define COM_GPIO_Port GPIOA
+#define COM1_Pin GPIO_PIN_1
+#define COM_GPIO_Port GPIOA
+#define COM2_Pin GPIO_PIN_2
+#define COM_GPIO_Port GPIOA
+#define COM3_Pin GPIO_PIN_3
+#define COM_GPIO_Port GPIOA
+#define LCD1_Pin GPIO_PIN_4
+#define LCD_GPIO_Port GPIOA
+#define LCD2_Pin GPIO_PIN_5
+#define LCD_GPIO_Port GPIOA
+#define LCD3_Pin GPIO_PIN_6
+#define LCD_GPIO_Port GPIOA
+#define LCD4_Pin GPIO_PIN_7
+#define LCD_GPIO_Port GPIOA
 #define BUTTON_Pin GPIO_PIN_0
 #define BUTTON_GPIO_Port GPIOB
+#define LCD5_Pin GPIO_PIN_8
+#define LCD_GPIO_Port GPIOA
+#define LCD6_Pin GPIO_PIN_9
+#define LCD_GPIO_Port GPIOA
+#define LCD7_Pin GPIO_PIN_10
+#define LCD_GPIO_Port GPIOA
+#define LCD8_Pin GPIO_PIN_11
+#define LCD_GPIO_Port GPIOA
 #define SWDIO_Pin GPIO_PIN_13
 #define SWDIO_GPIO_Port GPIOA
 #define SWCLK_Pin GPIO_PIN_14
 #define SWCLK_GPIO_Port GPIOA
-#define BUZZ_Pin GPIO_PIN_15
-#define BUZZ_GPIO_Port GPIOA
+#define BUZZ_Pin GPIO_PIN_3
+#define BUZZ_GPIO_Port GPIOB
 #define VTEMP_Pin GPIO_PIN_4
 #define VTEMP_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
