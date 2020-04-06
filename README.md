@@ -6,5 +6,5 @@ Building the Firmware
 
 Use STM32CubeIDE (https://www.st.com/en/development-tools/stm32cubeide.html)
 
-For LCD use the  LCD brance, for LED use the LED branch.
+For LCD use the  LCD brance, for LED use the LED branch. You can construct the hardware with either LCD support or LED support, but not both!
 
